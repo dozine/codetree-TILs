@@ -6,7 +6,7 @@ avg=sum_val/n
 
 print(f'{avg:.1f}')
 if avg >=4.0:
-    print("perfect")
+    print("Perfect")
 elif avg>=3.0:
     print("Good")
 else: 
