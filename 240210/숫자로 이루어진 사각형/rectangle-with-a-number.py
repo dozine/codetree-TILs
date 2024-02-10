@@ -8,4 +8,7 @@ def square(n):
             if cnt ==10:
                 cnt=1
         print()
-print(num)
+
+
+
+square(num)
