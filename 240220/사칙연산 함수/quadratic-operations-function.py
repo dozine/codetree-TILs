@@ -17,7 +17,7 @@ c = int(c)
 if o=="+":
     print(f'{a} + {c} = {add(a,c)}')
 elif o=="-":
-    print(f'{a} - {c} = {div(a,c)}')
+    print(f'{a} - {c} = {sub(a,c)}')
 elif o=="*":
     print(f'{a} * {c} = {mul(a,c)}')
 elif o=="/":
