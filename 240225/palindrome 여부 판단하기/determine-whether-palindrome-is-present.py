@@ -1,4 +1,4 @@
-_str=list(map(str,input().split()))
+_str= input()
 
 def palindrome(a):
     for i in range(len(a)):
