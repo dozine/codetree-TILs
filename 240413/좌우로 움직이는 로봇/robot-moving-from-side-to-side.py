@@ -1,6 +1,6 @@
 max_t=1000000
 n,m=tuple(map(int,input().split()))
-pos_a,pos_b=[0]*50000,[0]*50000
+pos_a,pos_b=[0]*(max_t+1),[0]*(max_t+1)
 
 time_a=1 
 for _ in range(n):
