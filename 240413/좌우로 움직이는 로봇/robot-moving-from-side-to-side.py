@@ -1,4 +1,4 @@
-max_t=50000
+max_t=1000000
 n,m=tuple(map(int,input().split()))
 pos_a,pos_b=[0]*50000,[0]*50000
 
