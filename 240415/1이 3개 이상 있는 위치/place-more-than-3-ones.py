@@ -20,5 +20,5 @@ ans = 0
 for i in range(n):
     for j in range(n):
         if adjacent_cnt(i,j) >=3:
-            and +=1 
+            ans +=1 
 print(ans)
