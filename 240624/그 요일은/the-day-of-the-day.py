@@ -9,11 +9,12 @@ def count(m,d):
     total_day+=d
     return total_day
 
-total_day=count(m2,d2)-count(m1,d1)+1
-arr=['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+total_day=count(m2,d2)-count(m1,d1)
 
+arr=['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+start_index = arr.index(A)
 cnt=total_day//7
 for j in range(total_day%7):
-    if arr[j]==A:
+    if arr[(start_index+j)%7]==A:
         cnt+=1
 print(cnt)
