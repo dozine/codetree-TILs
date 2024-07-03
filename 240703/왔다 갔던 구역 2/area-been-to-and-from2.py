@@ -30,3 +30,19 @@ for elem in checked:
     if elem >= 2:
         cnt+=1
 print(cnt)
+
+
+
+
+
+OFFSET=1000
+MAX_R=2000
+n=int(input())
+
+distance=0
+for _ in range(n):
+    distance,direction = tuple(map(int,input()))
+    distance=int(distance)
+    if direction == 'L':
+        section_left=cur-distance
+        section_right=cur
