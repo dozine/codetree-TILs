@@ -18,6 +18,6 @@ for i,(x1,y1,x2,y2) in enumerate(rects,start=1):
 blue_area=0
 for x in range(MAX_R+1):
     for y in range(MAX_R+1):
-        if checked[x][y]==2:
+        if checked[x][y]%2==0:
             blue_area+=1
 print(blue_area)
