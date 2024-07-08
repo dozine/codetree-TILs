@@ -1,4 +1,4 @@
-MAX_T=100000000
+MAX_T=1000000
 
 n,m=tuple(map(int,input().split()))
 pos_a,pos_b=[0]*(MAX_T+1),[0]*(MAX_T)
@@ -20,7 +20,7 @@ for _ in range(m):
 ans=-1
 for i in range(1,time_a):
     if pos_a[i] == pos_b[i]:
-        ans= i
+        ans = i
         break
 
 print(ans)
