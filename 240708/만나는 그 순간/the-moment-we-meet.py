@@ -17,7 +17,7 @@ for _ in range(m):
         pos_b[time_b]=pos_b[time_b-1]+(1 if d=='R' else -1)
         time_b +=1
 
-
+ans=0
 for i in range(1,time_a):
     if pos_a[i] == pos_b[i]:
         ans= i
