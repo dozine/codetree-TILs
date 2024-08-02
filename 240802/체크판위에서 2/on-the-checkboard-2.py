@@ -1,10 +1,8 @@
 r,c=tuple(map(int,input().split()))
-
 arr=[
     input().split()
     for _ in range(r)
 ]
-
 cnt=0
 for i in range(1,c):
     for j in range(1,r):
