@@ -1,4 +1,4 @@
-n,b=map(int,input().split())
+n,b=tuple(map(int,input().split()))
 p=[int(input()) for _ in range(n)]
 
 ans=0
