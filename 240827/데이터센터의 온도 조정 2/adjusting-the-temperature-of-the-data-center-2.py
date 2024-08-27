@@ -1,26 +1,20 @@
-MAX_T = 1000
-n,c,g,h=tuple(map(int,input().split()))
-ta, tb = [0] * n, [0] * n
-for i in range(n):
-    ta[i], tb[i] = tuple(map(int, input().split()))
+n, c, g, h = map(int, input().split())
+machine = [tuple(map(int, input().split())) for _ in range(n)]
 
-def single_efficiency(low, high, t):
-    if t < low:
-        return c
-    elif t <= high:
-        return g
-    else:
-        return h
-
-def performance(t):
-    total_efficiency = 0
-
-    # 장비별 작업량의 합을 계산합니다.
+def work(a):
+    global n, c, g, h
+    sum_val = 0
     for i in range(n):
-        total_efficiency += single_efficiency(ta[i], tb[i], t)
-    return total_efficiency
-max_out = 0
-for t in range(MAX_T + 1):
-    max_out = max(max_out, performance(t))
+        down, up = machine[i]
+        if a < down:
+            sum_val += c
+        elif a > up:
+            sum_val += h
+        else:
+            sum_val += g
+    return sum_val
 
-print(max_out)
+ans = 0
+for i in range(1001):
+    ans = max(ans, work(i))
+print(ans)
