@@ -11,4 +11,5 @@ for i in range(n):
     else:
         box.append(cnt)
         cnt=1
+box.append(cnt)
 print(max(box))
