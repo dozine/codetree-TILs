@@ -1,15 +1,16 @@
-n,m,k=tuple(map(int,input().split()))
-pernish=[
+n, m, k = tuple(map(int, input().split()))
+penalized_person = [
     int(input())
     for _ in range(m)
 ]
-student=[0]*(n+1)
+penalty_num = [0] * (n + 1)
 
+ans = -1
+for target in penalized_person:
+    penalty_num[target] += 1
 
-for i in pernish:
-    student[i]+=1
-    if student[i]>=k:
-        ans=i
+    if penalty_num[target] >= k:
+        ans = target
         break
-    
-print(i)
+
+print(ans)
