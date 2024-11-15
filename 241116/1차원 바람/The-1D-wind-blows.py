@@ -1,40 +1,57 @@
-def shift_row(arr, direction):
-    if direction == 'L':
-        return [arr[-1]] + arr[:-1]
-    else:
-        return arr[1:] + [arr[0]]
+n, m, q = map(int, input().split())
+grid = [
+    list(map(int,input().split()))
+    for _ in range(n)
+]
 
-def propagate_wind(building, row, direction):
-    curr_row = row
-    shift_direction = 'R' if direction == 'L' else 'L'
-    
-    while True:
-        building[curr_row] = shift_row(building[curr_row], shift_direction)
-        
-        if direction == 'L':
-            curr_row -= 1
+def shift(row, direction):
+    if direction=="L":
+        temp=grid[row][-1]
+        for i in range(m-1,0,-1):
+            grid[row][i]=grid[row][i-1]
+        grid[row][0]=temp
+    else: 
+        temp=grid[row][0]
+        for i in range(m-1):
+            grid[row][i]=grid[row][i+1]
+        grid[row][-1]=temp
+
+def can_go(a,b):
+    for i in range(m):
+        if a[i]==b[i]:
+            return True
+    return False
+
+for _ in range(q):
+    r,d=map(str,input().split())
+    r=int(r)
+    shift(r-1,d)
+    memory=d
+    rows=r-1
+    for i in range(rows,0,-1):
+        if can_go(grid[i],grid[i-1]):
+            if d=='R':
+                shift(i-1,'L')
+                d='L'
+            else:
+                shift(i-1,'R')
+                d='R'
         else:
-            curr_row += 1
-        
-        if curr_row < 0 or curr_row >= len(building):
             break
-        
-        if any(building[row][i] == building[curr_row][i] for i in range(len(building[0]))):
-            continue
+    d=memory
+
+    for i in range(rows,n-1):
+        if can_go(grid[i],grid[i+1]):
+            if d=='R':
+                shift(i+1,'L')
+                d='L'
+            else:
+                shift(i+1,'R')
+                d='R'
         else:
             break
 
-def simulate_wind(building, winds):
-    for row, direction in winds:
-        propagate_wind(building, int(row) - 1, direction)
-    return building
-
-# Read input
-N, M, Q = map(int, input().split())
-building = [list(map(int, input().split())) for _ in range(N)]
-winds = [tuple(input().split()) for _ in range(Q)]
-
-# Simulate wind and print final building
-final_building = simulate_wind(building, winds)
-for row in final_building:
-    print(' '.join(map(str, row)))
+for i in range(n):
+    for j in range(m):
+        print(grid[i][j],end=' ')
+    print()
