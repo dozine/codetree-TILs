@@ -1,68 +1,62 @@
-def find_next_position(grid, n, curr_r, curr_c):
-    # 상하좌우 방향 정의 (우선순위 순서대로)
-    dr = [-1, 1, 0, 0]  # 상하좌우
-    dc = [0, 0, -1, 1]
-    
-    current_value = grid[curr_r][curr_c]
-    candidates = []  # (값, row, col) 형태로 저장
-    
-    # 모든 방향을 확인하고 현재 값보다 큰 값을 가진 위치 저장
-    for i in range(4):
-        new_r = curr_r + dr[i]
-        new_c = curr_c + dc[i]
-        
-        # 격자 범위 내에 있고 현재 값보다 큰 경우
-        if 0 <= new_r < n and 0 <= new_c < n:
-            if grid[new_r][new_c] > current_value:
-                # (값, 방향 인덱스, row, col) 형태로 저장
-                candidates.append((grid[new_r][new_c], i, new_r, new_c))
-    
-    # 이동할 수 있는 위치가 없는 경우
-    if not candidates:
-        return -1, -1
-        
-    # 가능한 위치들 중 우선순위가 가장 높은 위치 선택
-    # 1. 값이 같은 경우 방향 우선순위(상하좌우)를 따름
-    # 2. 값이 다른 경우 더 작은 값을 선택
-    candidates.sort(key=lambda x: (x[0], x[1]))
-    return candidates[0][2], candidates[0][3]
+# 변수 선언 및 입력
+n, curr_x, curr_y = tuple(map(int, input().split()))
+a = [[0] * (n + 1)]
+for _ in range(n):
+    a.append([0] + list(map(int, input().split())))
 
-def solve(grid, n, start_r, start_c):
-    path = []
-    curr_r, curr_c = start_r - 1, start_c - 1  # 0-based 인덱스로 변환
-    
-    # 시작 위치 추가
-    path.append(grid[curr_r][curr_c])
-    
-    while True:
-        # 다음 위치 찾기
-        next_r, next_c = find_next_position(grid, n, curr_r, curr_c)
-        
-        # 더 이상 이동할 수 없으면 종료
-        if next_r == -1 and next_c == -1:
-            break
-        
-        # 경로에 추가하고 현재 위치 업데이트
-        path.append(grid[next_r][next_c])
-        curr_r, curr_c = next_r, next_c
-    
-    return path
+# 방문하게 되는 숫자들을 담을 곳입니다.
+visited_nums = []
 
-def main():
-    # 입력 받기
-    n, start_r, start_c = map(int, input().split())
-    
-    # 격자 정보 입력 받기
-    grid = []
-    for _ in range(n):
-        row = list(map(int, input().split()))
-        grid.append(row)
-    
-    # 경로 찾기
-    path = solve(grid, n, start_r, start_c)
-    
-    # 결과 출력
-    print(' '.join(map(str, path)))
 
-if __name__ == "__main__":
-    main()
+# 범위가 격자 안에 들어가는지 확인합니다.
+def in_range(x, y):
+    return 1 <= x and x <= n and 1 <= y and y <= n
+
+
+# 범위가 격자 안이고, 해당 위치의 값이 더 큰지 확인합니다.
+def can_go(x, y, curr_num):
+    return in_range(x, y) and a[x][y] > curr_num
+
+
+# 조건에 맞춰 움직여봅니다.
+# 움직였다면 true를 반환하고
+# 만약 움직일 수 있는 곳이 없었다면 false를 반환합니다.
+def simulate():
+    global curr_x, curr_y
+    
+    # 코딩의 간결함을 위해 
+    # 문제 조건에 맞게 상하좌우 순서로
+    # 방향을 정의합니다.
+    dxs, dys = [-1, 1, 0, 0], [0, 0, -1, 1]
+    
+    # 각각의 방향에 대해 나아갈 수 있는 곳이 있는지 확인합니다.
+    for dx, dy in zip(dxs, dys):
+        next_x, next_y = curr_x + dx, curr_y + dy
+        
+        # 갈 수 있는 곳이라면
+        # 이동하고 true를 반환합니다.
+        if can_go(next_x, next_y, a[curr_x][curr_y]):
+            curr_x, curr_y = next_x, next_y
+            return True
+    
+    # 움직일 수 있는 곳이 없었다는 의미로
+    # false 값을 반환합니다.
+    return False
+
+
+# 초기 위치에 적혀있는 값을 답에 넣어줍니다.
+visited_nums.append(a[curr_x][curr_y])
+while True:
+    # 조건에 맞춰 움직여봅니다.
+    greater_number_exist = simulate()
+    
+    # 인접한 곳에 더 큰 숫자가 없다면 종료합니다.
+    if not greater_number_exist:
+        break
+    
+    # 움직이고 난 후의 위치를 답에 넣어줍니다.
+    visited_nums.append(a[curr_x][curr_y])
+
+# 출력:
+for num in visited_nums:
+    print(num, end=' ')
