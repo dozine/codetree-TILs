@@ -1,54 +1,97 @@
 def move_and_merge(board, direction):
     N = 4
-    new_board = [[0] * N for _ in range(N)]
+    result = [[0] * N for _ in range(N)]
     
-    # 방향에 따라 순회 방향 결정
-    if direction == 'L':
-        ranges = [(i, j) for i in range(N) for j in range(N)]
+    if direction == 'D':
+        for j in range(N):
+            # Get all numbers in the column from top to bottom
+            numbers = []
+            for i in range(N):
+                if board[i][j] != 0:
+                    numbers.append(board[i][j])
+            
+            # Merge same adjacent numbers
+            merged = []
+            i = len(numbers) - 1
+            while i >= 0:
+                if i > 0 and numbers[i] == numbers[i-1]:
+                    merged.append(numbers[i] * 2)
+                    i -= 2
+                else:
+                    merged.append(numbers[i])
+                    i -= 1
+            merged.reverse()  # Reverse to maintain correct order
+            
+            # Fill the result column from bottom to top
+            idx = N - 1
+            for num in merged:
+                result[idx][j] = num
+                idx -= 1
+    
+    elif direction == 'U':
+        for j in range(N):
+            numbers = []
+            for i in range(N):
+                if board[i][j] != 0:
+                    numbers.append(board[i][j])
+            
+            merged = []
+            i = 0
+            while i < len(numbers):
+                if i < len(numbers) - 1 and numbers[i] == numbers[i+1]:
+                    merged.append(numbers[i] * 2)
+                    i += 2
+                else:
+                    merged.append(numbers[i])
+                    i += 1
+            
+            # Fill the result column from top to bottom
+            for i, num in enumerate(merged):
+                result[i][j] = num
+    
+    elif direction == 'L':
+        for i in range(N):
+            numbers = []
+            for j in range(N):
+                if board[i][j] != 0:
+                    numbers.append(board[i][j])
+            
+            merged = []
+            j = 0
+            while j < len(numbers):
+                if j < len(numbers) - 1 and numbers[j] == numbers[j+1]:
+                    merged.append(numbers[j] * 2)
+                    j += 2
+                else:
+                    merged.append(numbers[j])
+                    j += 1
+            
+            # Fill the result row from left to right
+            for j, num in enumerate(merged):
+                result[i][j] = num
+    
     elif direction == 'R':
-        ranges = [(i, j) for i in range(N) for j in range(N-1, -1, -1)]
-    elif direction == 'U':
-        ranges = [(i, j) for j in range(N) for i in range(N)]
-    elif direction == 'D':
-        ranges = [(i, j) for j in range(N) for i in range(N-1, -1, -1)]
-    
-    # 보드를 회전하여 모든 방향의 처리를 왼쪽 이동으로 통일
-    rotated = board
-    if direction == 'R':
-        rotated = [row[::-1] for row in board]
-    elif direction == 'U':
-        rotated = [[board[j][i] for j in range(N)] for i in range(N)]
-    elif direction == 'D':
-        rotated = [[board[j][i] for j in range(N-1, -1, -1)] for i in range(N)]
-    
-    # 각 행에 대해 처리
-    result = []
-    for row in rotated:
-        # 0이 아닌 숫자들만 추출
-        numbers = [x for x in row if x != 0]
-        merged = []
-        i = 0
-        
-        # 같은 숫자 합치기
-        while i < len(numbers):
-            if i + 1 < len(numbers) and numbers[i] == numbers[i + 1]:
-                merged.append(numbers[i] * 2)
-                i += 2
-            else:
-                merged.append(numbers[i])
-                i += 1
-        
-        # 결과 행의 길이를 4로 맞추기
-        merged.extend([0] * (N - len(merged)))
-        result.append(merged)
-    
-    # 방향에 따라 결과를 원래 방향으로 되돌리기
-    if direction == 'R':
-        result = [row[::-1] for row in result]
-    elif direction == 'U':
-        result = [[result[j][i] for j in range(N)] for i in range(N)]
-    elif direction == 'D':
-        result = [[result[j][i] for j in range(N-1, -1, -1)] for i in range(N)]
+        for i in range(N):
+            numbers = []
+            for j in range(N-1, -1, -1):
+                if board[i][j] != 0:
+                    numbers.append(board[i][j])
+            
+            merged = []
+            j = 0
+            while j < len(numbers):
+                if j < len(numbers) - 1 and numbers[j] == numbers[j+1]:
+                    merged.append(numbers[j] * 2)
+                    j += 2
+                else:
+                    merged.append(numbers[j])
+                    j += 1
+            
+            # Fill the result row from right to left
+            idx = N - 1
+            for num in merged:
+                result[i][idx] = num
+                idx -= 1
     
     return result
 
