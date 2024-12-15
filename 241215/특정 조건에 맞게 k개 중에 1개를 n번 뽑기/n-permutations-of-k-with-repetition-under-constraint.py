@@ -12,9 +12,7 @@ def find_duplicated_permutations(cnt):
         return 
 
     for i in range(1,k+1):
-#        if cnt>=2 and i == selected_nums[-1] and i==selected_nums[-2]:
-#            continue
-        if cnt>=2 and selected_nums[i] == selected_nums[i-1] and selected_nums[i-1]==selected_nums[i-2]:
+        if cnt>=2 and i == selected_nums[-1] and i==selected_nums[-2]:
             continue
         else:
             selected_nums.append(i)
