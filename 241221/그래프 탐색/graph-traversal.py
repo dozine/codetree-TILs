@@ -1,39 +1,34 @@
-# n,m=tuple(map(int,input().split()))
-# x,y=[
-#     tuple(map(int,input().split()))
-#     for _ in range(m)
-# ]
+# 변수 선언 및 입력
+n, m = tuple(map(int, input().split()))
 
-# def dfs(v):
-#     for curr_v in range(1,n+1):
-#         if graph[vertex][curr_v] and no vi
-from collections import deque
+#index를 1번 부터 사용하기 위해 m+1만큼 할당합니다.
+graph = [[] for _ in range(n + 1)]
 
-def count_reachable_nodes(n, m, edges):
-    # 그래프 초기화
-    graph = {i: [] for i in range(1, n+1)}
-    for x, y in edges:
-        graph[x].append(y)
-        graph[y].append(x)
+visited = [False for _ in range(n + 1)]
+vertex_cnt = 0
+
+
+def dfs(vertex):
+    global vertex_cnt
     
-    # BFS 탐색
-    visited = set()
-    queue = deque([1])  # 1번 정점에서 시작
-    visited.add(1)
+    # 해당 정점에서 이어져있는 모든 정점을 탐색해줍니다.
+    for curr_v in graph[vertex]:
+        # 아직 간선이 존재하고 방문한 적이 없는 정점에 대해서만 탐색을 진행합니다.
+        if not visited[curr_v]:
+            visited[curr_v] = True
+            vertex_cnt += 1
+            dfs(curr_v)
     
-    while queue:
-        current = queue.popleft()
-        for neighbor in graph[current]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append(neighbor)
     
-    # 1번 정점을 제외한 도달 가능한 정점의 개수
-    return len(visited) - 1
+for i in range(m):
+    v1, v2 = tuple(map(int, input().split()))
 
-# 입력 받기
-n, m = map(int, input().split())
-edges = [tuple(map(int, input().split())) for _ in range(m)]
+    # 각 정점이 서로 이동이 가능한 양방향 그래프이기 때문에
+    # 각 정점에 대한 간선을 각각 저장해줍니다.
+    graph[v1].append(v2)
+    graph[v2].append(v1)
 
-# 결과 출력
-print(count_reachable_nodes(n, m, edges))
+visited[1] = True
+dfs(1)
+
+print(vertex_cnt)
