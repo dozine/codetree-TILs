@@ -1,43 +1,43 @@
-# 입력 처리
-n, m = map(int, input().split())
-grid = [list(map(int, input().split())) for _ in range(n)]
+# 변수 선언 및 입력
+n, m = tuple(map(int, input().split()))
+grid = [
+    list(map(int, input().split()))
+    for _ in range(n)
+]
 
-# 방문 여부 기록
-visited = [[False] * m for _ in range(n)]
+visited = [
+    [0 for _ in range(m)]
+    for _ in range(n)
+]
 
-# 방향 벡터: 아래쪽(1, 0), 오른쪽(0, 1)
-dxs = [1, 0]
-dys = [0, 1]
-
-# 범위 체크
+# 주어진 위치가 격자를 벗어나는지 여부를 반환합니다.
 def in_range(x, y):
-    return 0 <= x < n and 0 <= y < m
+    return 0 <= x and x < n and 0 <= y and y < m
 
-# 이동 가능 여부 확인
+
+# 주어진 위치로 이동할 수 있는지 여부를 확인합니다.
 def can_go(x, y):
-    # 범위 밖이거나, 방문했거나, 뱀이 있는 칸(grid[x][y] == 0)인 경우 불가능
-    return in_range(x, y) and not visited[x][y] and grid[x][y] == 1
+    if not in_range(x, y):
+        return False
+    
+    if visited[x][y] or grid[x][y] == 0:
+        return False
+    
+    return True
 
-# DFS 탐색
+
 def dfs(x, y):
-    # 현재 위치 방문 처리
-    visited[x][y] = True
+    dxs, dys = [0, 1], [1, 0]
     
-    # 우측 하단 도달 시 경로 존재
-    if x == n - 1 and y == m - 1:
-        return True
-    
-    # 아래와 오른쪽 방향으로 이동
     for dx, dy in zip(dxs, dys):
-        nx, ny = x + dx, y + dy
-        if can_go(nx, ny):
-            if dfs(nx, ny):  # 다음 이동에서 탈출 가능하면 True 반환
-                return True
+        new_x, new_y = x + dx, y + dy
+        
+        if can_go(new_x, new_y):
+            visited[new_x][new_y] = 1
+            dfs(new_x, new_y)
+            
+            
+visited[0][0] = 1
+dfs(0, 0)
 
-    return False  # 탈출 경로를 찾을 수 없으면 False 반환
-
-# 좌측 상단에서 DFS 시작
-if dfs(0, 0):
-    print(1)  # 탈출 가능
-else:
-    print(0)  # 탈출 불가능
+print(visited[n - 1][m - 1])
