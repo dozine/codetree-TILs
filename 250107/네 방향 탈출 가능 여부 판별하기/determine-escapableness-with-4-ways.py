@@ -18,11 +18,12 @@ def can_go(x,y):
 
 def bfs():
     while q: 
+        x,y=q.popleft()
         dxs,dys=[0,1,0,-1],[1,0,-1,0]
         for dx,dy in zip(dxs,dys):
             nx,ny=dx+x, dy+y
             if can_go(nx,ny):
-                q.append((nx,ny)):
+                q.append((nx,ny))
                 visited[nx][ny]=True
 
 q.append((0,0))
