@@ -1,4 +1,4 @@
-MOD =100000007
+MOD =1000000007
 n = int(input())
 
 # Write your code here!
