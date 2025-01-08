@@ -1,21 +1,13 @@
 n = int(input())
 
 # Write your code here!
-def square(n):
-    if n == 1:
-        return 1
-    if n == 2:
-        return 2
-    
-    # DP 배열 초기화
-    dp = [0] * (n + 1)
-    dp[1] = 1
-    dp[2] = 2
+MOD=10007
 
-    # 점화식 계산
-    for i in range(3, n + 1):
-        dp[i] = dp[i - 1] + dp[i - 2]
-    
-    return dp[n]
+dp= [0]*(n+1)
 
-print(square(n)%10007)
+dp[0]=1
+dp[1]=1
+for i in range(2,n+1):
+    dp[i] = (dp[i-1]+dp[i-2])%MOD
+
+print(dp[n])
