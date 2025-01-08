@@ -18,4 +18,4 @@ def square(n):
     
     return dp[n]
 
-print(square(n))
+print(square(n)%10007)
