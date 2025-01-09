@@ -12,7 +12,7 @@ def initialize():
     for i in range(1,n):
         dp[i][0]=min(dp[i-1][0],grid[i][0])
     for j in range(1,n):
-        dp[j][0]=min(dp[0][j-1],grid[0][j])
+        dp[0][j]=min(dp[0][j-1],grid[0][j])
 
 initialize()
 
