@@ -12,7 +12,7 @@ def initialize():
 
 initialize()
 
-for i in range(1,n):
+for i in range(n):
     for j in range(m,-1,-1):
         if j >= A[i]:
             if dp[j-A[i]] == MAX_ANS:
