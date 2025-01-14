@@ -1,7 +1,7 @@
 n=int(input())
 coin=[0]+list(map(int,input().split()))
 
-dp=[[0 for _ in range(5)]for _ in range(n+1)]
+dp=[[0 for _ in range(4)]for _ in range(n+1)]
 
 dp[1][1]=coin[1]
 if n>1:
