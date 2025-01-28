@@ -1,14 +1,21 @@
-n = int(input()) 
-blocks = [int(input()) for _ in range(n)]
-s1, e1 = map(int, input().split())
-s2, e2 = map(int, input().split()) 
+n=int(input())
 
-remaining_blocks = blocks[1:s1] + blocks[e1:]
+block=[
+    int(input())
+    for _ in range(n)
+]
 
-remaining_blocks = remaining_blocks[1:s2] + remaining_blocks[e2:]
+def remove_block(arr,start,end):
+    return arr[:start-1] + arr[end:]
+
+s1,e1=tuple(map(int,input().split()))
+new_block=remove_block(block,s1,e1)
+
+s2,e2=tuple(map(int,input().split()))
+result_block=remove_block(new_block,s2,e2)
 
 
-print(len(remaining_blocks))
-for i in remaining_blocks:
+print(len(result_block))
+for i in result_block:
     print(i)
 
