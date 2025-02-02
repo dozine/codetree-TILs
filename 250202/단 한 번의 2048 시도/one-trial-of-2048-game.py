@@ -1,121 +1,73 @@
-NONE = -1
+# 격자 크기
+N = 4
 
-# 변수 선언 및 입력
-n = 4
-grid = [
-    list(map(int, input().split()))
-    for _ in range(n)
-]
-next_grid = [
-    [0 for _ in range(n)]
-    for _ in range(n)
-]
+def print_grid(grid):
+    for row in grid:
+        print(*row)
 
-
-# grid를 시계방향으로 90' 회전시킵니다.
-def rotate():
-    # next_grid를 0으로 초기화합니다.
-    for i in range(n):
-        for j in range(n):
-            next_grid[i][j] = 0
+def move_down(grid):
+    # 새로운 격자 생성
+    new_grid = [[0] * N for _ in range(N)]
     
-    # 90' 회전합니다.
-    for i in range(n):
-        for j in range(n):
-            next_grid[i][j] = grid[n - j - 1][i]
-    
-    # next_grid를 grid에 옮겨줍니다.
-    for i in range(n):
-        for j in range(n):
-            grid[i][j] = next_grid[i][j]
-
-
-# 아래로 숫자들을 떨어뜨립니다.
-def drop():
-    # next_grid를 0으로 초기화합니다.
-    for i in range(n):
-        for j in range(n):
-            next_grid[i][j] = 0
-    
-    # 아래 방향으로 떨어뜨립니다.
-    for j in range(n):
-        # 같은 숫자끼리 단 한번만
-        # 합치기 위해 떨어뜨리기 전에
-        # 숫자 하나를 keep해줍니다.
-        keep_num, next_row = NONE, n - 1
+    # 각 열별로 처리
+    for col in range(N):
+        # 1. 해당 열의 0이 아닌 숫자들을 모두 추출
+        numbers = []
+        for row in range(N-1, -1, -1):  # 아래에서부터 위로
+            if grid[row][col] != 0:
+                numbers.append(grid[row][col])
         
-        for i in range(n - 1, -1, -1):
-            if not grid[i][j]:
-                continue
-            
-            # 아직 떨어진 숫자가 없다면, 갱신해줍니다.
-            if keep_num == NONE:
-                keep_num = grid[i][j];
-            
-            # 가장 최근에 관찰한 숫자가 현재 숫자와 일치한다면
-            # 하나로 합쳐주고, keep 값을 비워줍니다.
-            elif keep_num == grid[i][j]:
-                next_grid[next_row][j] = keep_num * 2
-                keep_num = NONE
-                
-                next_row -= 1
-            
-            # 가장 최근에 관찰한 숫자와 현재 숫자가 다르다면
-            # 최근에 관찰한 숫자를 실제 떨어뜨려주고, keep 값을 갱신해줍니다.
+        # 2. 같은 숫자끼리 합치기
+        merged = []
+        i = 0
+        while i < len(numbers):
+            if i + 1 < len(numbers) and numbers[i] == numbers[i + 1]:
+                # 같은 숫자면 합쳐서 저장
+                merged.append(numbers[i] * 2)
+                i += 2
             else:
-                next_grid[next_row][j] = keep_num
-                keep_num = grid[i][j]
-                
-                next_row -= 1
+                # 다른 숫자면 그대로 저장
+                merged.append(numbers[i])
+                i += 1
         
-        # 전부 다 진행했는데도 keep 값이 남아있다면
-        # 실제로 한번 떨어뜨려줍니다.
-        if keep_num != NONE:
-            next_grid[next_row][j] = keep_num
-            next_row -= 1
+        # 3. 합쳐진 숫자들을 아래에서부터 채우기
+        for i, num in enumerate(merged):
+            new_grid[N-1-i][col] = num
     
-    # next_grid를 grid에 옮겨줍니다.
-    for i in range(n):
-        for j in range(n):
-            grid[i][j] = next_grid[i][j]
+    return new_grid
 
+def rotate_90(grid):
+    # 시계 방향으로 90도 회전
+    return [[grid[N-1-j][i] for j in range(N)] for i in range(N)]
 
-# move_dir 방향으로 기울이는 것을 진행합니다.
-# 회전을 규칙적으로 하기 위해
-# 아래, 오른쪽, 위, 왼쪽 순으로 dx, dy 순서를 가져갑니다.
-def tilt(move_dir):
-    # Step 1.
-    # move_dir 횟수만큼 시계방향으로 90'회전하는 것을 반복하여
-    # 항상 아래로만 숫자들을 떨어뜨리면 되게끔 합니다.
-    for _ in range(move_dir):
-        rotate()
-
-    # Step 2.
-    # 아래 방향으로 떨어뜨립니다.
-    drop()
+def move(grid, direction):
+    # 먼저 격자를 회전하여 모든 방향의 이동을 아래 방향 이동으로 변환
+    if direction == 'L':  # 왼쪽으로 이동
+        grid = rotate_90(rotate_90(rotate_90(grid)))
+    elif direction == 'U':  # 위로 이동
+        grid = rotate_90(rotate_90(grid))
+    elif direction == 'R':  # 오른쪽으로 이동
+        grid = rotate_90(grid)
     
-    # Step 3.
-    # 4 - move_dir 횟수만큼 시계방향으로 90'회전하는 것을 반복하여
-    # 처음 상태로 돌아오게 합니다. (총 360' 회전)
-    for _ in range(4 - move_dir):
-        rotate()
+    # 아래 방향으로 이동
+    grid = move_down(grid)
+    
+    # 원래 방향으로 되돌리기
+    if direction == 'L':
+        grid = rotate_90(grid)
+    elif direction == 'U':
+        grid = rotate_90(rotate_90(grid))
+    elif direction == 'R':
+        grid = rotate_90(rotate_90(rotate_90(grid)))
+    
+    return grid
 
+# 입력 처리
+grid = [list(map(int, input().split())) for _ in range(N)]
+direction = input().strip()
 
-dir_char = input()
+# 이동 실행
+result = move(grid, direction)
 
-# 아래, 오른쪽, 위, 왼쪽 순으로 
-# mapper를 지정합니다.
-dir_mapper = {
-    'D': 0,
-    'R': 1,
-    'U': 2,
-    'L': 3
-}
-
-# 기울입니다.
-tilt(dir_mapper[dir_char])
-
-for i in range(n):
-    for j in range(n):
-        print(grid[i][j], end=" ")
-    print()
+# 결과 출력
+print_grid(result)
