@@ -14,7 +14,7 @@ def in_range(x,y):
 def can_go(x,y,prev_num):
     return in_range(x,y) and num[x][y] > prev_num
 
-def find_max(x,y,prev_num):
+def find_max(x,y,cnt):
     global ans
     ans=max(ans,cnt)
 
@@ -22,7 +22,7 @@ def find_max(x,y,prev_num):
     dys=[0,1,1,1,0,-1,-1,-1]
     d = move_dir[x][y]-1
     for i in range(n):
-        nx,ny= x+dx[d]*i, y+dy[d]*i
+        nx,ny= x+dxs[d]*i, y+dys[d]*i
         if can_go(nx,ny,num[x][y]):
             find_max(nx,ny,cnt+1)
 
