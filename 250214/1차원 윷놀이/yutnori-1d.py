@@ -18,9 +18,8 @@ def calc():
 
 def find_max(cnt):
     global ans
-
+    ans = max(ans, calc())
     if cnt == n: 
-        ans = max(ans, calc())
         return
 	
     for i in range(k):
