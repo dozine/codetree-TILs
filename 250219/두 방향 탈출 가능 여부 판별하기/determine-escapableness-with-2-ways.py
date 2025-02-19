@@ -10,8 +10,11 @@ def in_range(x,y):
     return 0<=x and x<n and 0<=y and y<m
 
 def can_go(x,y):
-    if in_range(x,y) and grid[x][y]==1:
-        return True
+    if not in_range(x,y):
+        return False
+    if visited[x][y] or grid[x][y]==0:
+        return False
+    return True
 
 def dfs(x,y):
     dxs,dys=[0,1],[1,0]
