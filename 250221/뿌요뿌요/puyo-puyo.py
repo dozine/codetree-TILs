@@ -1,55 +1,67 @@
+# 변수 선언 및 입력:
 n = int(input())
-matrix = [list(map(int, input().split())) for _ in range(n)]
+grid = [
+    list(map(int, input().split()))
+    for _ in range(n)
+]
+visited = [
+    [False for _ in range(n)]
+    for _ in range(n)
+]
 
-visited = [list(0 for _ in range(n)) for _ in range(n)]
+max_block, bomb_cnt = 0, 0
+curr_block_num = 0
 
-block = []      # 하나의 블럭을 이루는 좌표값 (x, y) 들을 담을 리스트
-ans = []        # 각 블럭들이 모여있는 리스트를 하나로 담아둘 리스트
 
-# 현재 같은 target(숫자)을 가지고 있고, 이동 가능한 위치인지 파악하는 함수
-def can_go(x, y, target):
-    if(x < 0 or y < 0 or x >= n or y >= n):
+# 탐색하는 위치가 격자 범위 내에 있는지 여부를 반환합니다.
+def in_range(x, y):
+    return 0 <= x and x < n and 0 <= y and y < n
+
+
+# 탐색하는 위치로 움직일 수 있는지 여부를 반환합니다.
+def can_go(x, y, color):
+    if not in_range(x, y):
         return False
-    if(matrix[x][y] != target or visited[x][y] == 1):
+    
+    if visited[x][y] or grid[x][y] != color:
         return False
-    else:
-        return True
+    
+    return True
+    
 
-# DFS 탐색 수행
-def dfs(x, y, target):
-    dx = [1, 0, -1, 0]
-    dy = [0, 1, 0, -1]
+def dfs(x, y):
+    global curr_block_num
+    
+    #0: 오른쪽, 1: 아래쪽, 2: 왼쪽, 3: 위쪽
+    dxs, dys = [0, 1, 0, -1], [1, 0, -1, 0]
+    
+    # 네 방향 각각에 대하여 DFS 탐색을 합니다.
+    for dx, dy, in zip(dxs, dys):
+        new_x, new_y = x + dx, y + dy
+        
+        if can_go(new_x, new_y, grid[x][y]):
+            visited[new_x][new_y] = True
+            # 블럭이 하나 추가됩니다.
+            curr_block_num += 1
+            dfs(new_x, new_y)
 
-    for i in range(4):
-        new_x = x + dx[i]
-        new_y = y + dy[i]
+            
+# 격자의 각 위치에서 탐색을 시작할 수 있는 경우
+# 한 블럭에 대한 DFS 탐색을 수행합니다.
+for i in range(n):
+    for j in range(n):
+        if not visited[i][j] and grid[i][j]:
+            # 해당 블럭을 방문할 수 있는 경우 visited 배열을 갱신하고
+            # 새로운 블럭을 탐색한다는 의미로 curr_block_num을 1으로 갱신합니다.
+            visited[i][j] = True
+            curr_block_num = 1
+            
+            dfs(i, j)
+            
+            # 한 블럭 묶음에 대한 탐색이 끝난 경우 답을 갱신합니다.
+            if curr_block_num >= 4:
+                bomb_cnt += 1
+                
+            max_block = max(max_block, curr_block_num)
 
-        if(can_go(new_x, new_y, target)):
-            visited[new_x][new_y] = 1
-            block.append((new_x, new_y))
-            dfs(new_x, new_y, target)
-
-# Main 실행
-for a in range(n):
-    for b in range(n):
-        if(visited[a][b] == 0):     # 현재 위치가 방문 가능한 곳이라면 -> 인접한 같은 숫자가 있는지 DFS로 블럭 찾기
-            visited[a][b] = 1
-            block.append((a, b))
-
-            dfs(a, b, matrix[a][b])
-
-            ans.append(block)       # 모인 블럭들을 ans에 담기
-        block = []      # 다음에 담을 블럭을 위해서 초기화
-
-block_cnt = 0   # 터지게 되는 블럭 수를 담을 변수
-max_sq = 0      # 최대 블럭의 크기를 담을 변수
-
-# 정답 출력을 위한 계산
-for i in range(len(ans)):
-    if(len(ans[i]) >= 4):       # 블럭이 4칸 이상이라면 터짐
-        block_cnt += 1
-    if(len(ans[i]) > max_sq):   # 최대 블럭보다 큰 블럭이 존재하면 -> 갱신
-        max_sq = len(ans[i])
-
-# print(ans)
-print(block_cnt, max_sq)
+print(bomb_cnt, max_block)
