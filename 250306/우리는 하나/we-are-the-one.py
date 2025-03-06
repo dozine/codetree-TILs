@@ -1,54 +1,102 @@
-from itertools import combinations
-import sys
 from collections import deque
 
-input = sys.stdin.readline
+# 변수 선언 및 입력
+n, k, u, d = tuple(map(int, input().split()))
+a = [
+    list(map(int, input().split()))
+    for _ in range(n)
+]
 
-# 1. 입력 받기
-N, K, U, D = map(int, input().split())
-grid = [list(map(int, input().split())) for _ in range(N)]
+ans = 0
 
-# 2. 이동 방향 (상, 하, 좌, 우)
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+s_pos = []
+pos = [
+    (i, j)
+    for i in range(n)
+    for j in range(n)
+]
 
-# 3. BFS 함수: 특정 시작점에서 이동 가능한 도시 개수 구하기
-def bfs(start_x, start_y, visited_global):
-    visited = [[False] * N for _ in range(N)]
-    queue = deque([(start_x, start_y)])
-    visited[start_x][start_y] = True
-    visited_global.add((start_x, start_y))
-    count = 1  # 시작점 포함
+# bfs에 필요한 변수들 입니다.
+q = deque()
+visited = [
+    [False for _ in range(n)]
+    for _ in range(n)
+]
 
-    while queue:
-        x, y = queue.popleft()
-        for d in range(4):
-            nx, ny = x + dx[d], y + dy[d]
-            if 0 <= nx < N and 0 <= ny < N and not visited[nx][ny]:
-                height_diff = abs(grid[x][y] - grid[nx][ny])
-                if U <= height_diff <= D:  # 이동 가능 조건
-                    visited[nx][ny] = True
-                    visited_global.add((nx, ny))
-                    queue.append((nx, ny))
-                    count += 1
 
-    return count
+def in_range(x, y):
+    return 0 <= x and x < n and 0 <= y and y < n
 
-# 4. 모든 도시 좌표 리스트 생성
-city_positions = [(i, j) for i in range(N) for j in range(N)]
 
-# 5. K개의 도시를 선택하는 조합을 생성하여 최대 방문 가능한 도시 수 탐색
-max_city_count = 0
-for selected_cities in combinations(city_positions, K):
-    visited_global = set()
-    total_count = 0
+def can_go(x, y, target):
+    if not in_range(x, y) or visited[x][y]:
+        return False
     
-    for x, y in selected_cities:
-        if (x, y) not in visited_global:
-            count = bfs(x, y, visited_global)
-            total_count += count
-    
-    max_city_count = max(max_city_count, total_count)
+    diff = abs(target - a[x][y])
+    return u <= diff and diff <= d
 
-# 6. 결과 출력
-print(max_city_count)
+
+def bfs():
+    # queue에 남은 것이 없을때까지 반복합니다.
+    while q:
+        # queue에서 가장 먼저 들어온 원소를 뺍니다.
+        x, y = q.popleft()
+        
+        dxs, dys = [1, -1, 0, 0], [0, 0, 1, -1]
+
+        # queue에서 뺀 원소의 위치를 기준으로 4방향을 확인해봅니다.
+        for dx, dy in zip(dxs, dys):
+            nx, ny = x + dx, y + dy
+
+            # 아직 방문한 적이 없으면서 갈 수 있는 곳이라면
+            # 새로 queue에 넣어주고 방문 여부를 표시해줍니다. 
+            if can_go(nx, ny, a[x][y]):
+                q.append((nx, ny))
+                visited[nx][ny] = True
+                
+
+def calc():
+    for i in range(n):
+        for j in range(n):
+            visited[i][j] = 0
+		
+    # bfs를 이용해 k개의 시작점으로부터
+    # 도달 가능한 지점을 탐색합니다.
+    # 모든 시작점을 queue에 넣고 시작하면
+    # 단 한번의 탐색 만으로 
+    # 모든 도달 가능한 위치를 구할 수 있습니다.
+    for x, y in s_pos:
+        q.append((x, y))
+        visited[x][y] = True
+        
+    bfs()
+    
+    cnt = 0
+    for i in range(n):
+        for j in range(n):
+            if visited[i][j]:
+                cnt += 1
+                
+    return cnt
+
+
+def find_max(idx, cnt):
+    global ans
+    
+    if cnt > k:
+        return
+    
+    if idx == n * n:
+        if cnt == k:
+            ans = max(ans, calc())
+        return
+    
+    s_pos.append(pos[idx])
+    find_max(idx + 1, cnt + 1)
+    s_pos.pop()
+    
+    find_max(idx + 1, cnt)
+
+
+find_max(0, 0)
+print(ans)
