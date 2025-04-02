@@ -1,4 +1,4 @@
-var a = "C"
-var a = "T"
+let a ="C"
+a ='T'
 
 console.log(a)
