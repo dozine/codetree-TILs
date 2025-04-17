@@ -5,8 +5,7 @@ m = int(input())
 b = list(map(int, input().split()))
 
 # Please write your code here.
-b=set(b)
-
+a=set(a)
 for i in b:
     if i in a:
         print(1)
