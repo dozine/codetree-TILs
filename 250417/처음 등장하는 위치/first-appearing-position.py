@@ -10,4 +10,4 @@ for i in range(n):
         d[arr[i]]=i+1
 
 for num,cnt in d.items():
-    print(num,cn)
+    print(num,cnt)
