@@ -41,20 +41,3 @@ print(ans)
 
 
 
-import sys 
-INT_MAX=sys.maxsize
-
-n=int(input())
-x,y=[],[]
-L,R=[0]*n,[0]*n개의
-ans=INT_MAX
-
-for _ in range(n):
-    given_x,given_y=tuple(map(int,input().split()))
-    x.append(given_x)
-    y.append(given_y)
-
-L[0]=0
-for i in range(1,n):
-    L[i]=L[i-1]+abs(x[i]-x[i-1])+bas(y[i]-y[i-1])
-    
