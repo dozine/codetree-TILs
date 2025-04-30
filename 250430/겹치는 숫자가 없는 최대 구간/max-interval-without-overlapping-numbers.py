@@ -1,5 +1,3 @@
-n = int(input())
-arr = list(map(int, input().split()))
 
 # Please write your code here.
 MAX_R = 100000
