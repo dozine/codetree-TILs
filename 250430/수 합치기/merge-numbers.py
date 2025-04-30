@@ -1,20 +1,16 @@
-from collections import deque
+import heapq
 
 n = int(input())
 arr = list(map(int, input().split()))
-arr.sort()
-
-from bisect import insort
+heapq.heapify(arr)  # 리스트를 최소 힙으로 변환 (O(N))
 
 ans = 0
-arr = deque(arr)
 
 while len(arr) > 1:
-    a = arr.popleft()
-    b = arr.popleft()
+    a = heapq.heappop(arr)  # 가장 작은 수
+    b = heapq.heappop(arr)  # 그 다음 작은 수
     cost = a + b
     ans += cost
-    # 삽입 위치를 정렬 유지하며 넣기
-    insort(arr, cost)
+    heapq.heappush(arr, cost)  # 합친 값을 다시 힙에 넣음
 
 print(ans)
