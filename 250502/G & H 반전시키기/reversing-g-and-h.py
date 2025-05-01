@@ -7,9 +7,8 @@ ans = 0
 mismatched=False
 for i in range(n):
     if a[i] !=b[i]:
-        if not mismatched:
-            mismatched=True
-            ans+=1
+        mismatched=True
+        ans+=1
     else:
         mismatched=False
 
