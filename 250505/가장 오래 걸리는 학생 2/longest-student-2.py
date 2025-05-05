@@ -30,7 +30,7 @@ while pq:
             heapq.heappush(pq, (new_dist, target_index))
 
 max_time = 0
-for i in range(1, n):
+for i in range(1, n+1):
     if dist[i] == INT_MAX:
         continue 
     max_time = max(max_time, dist[i])
