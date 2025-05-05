@@ -12,7 +12,6 @@ pq=[]
 
 for _ in range(m):
     x,y,z=tuple(map(int,input().split()))
-    graph[x].append((y,z))
     graph[y].append((x,z))
 
 dist[n]=0
