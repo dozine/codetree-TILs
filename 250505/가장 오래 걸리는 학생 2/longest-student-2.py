@@ -10,7 +10,7 @@ graph=[
 dist=[INT_MAX]*(n+1)
 pq=[]
 
-for _ in range(n+1):
+for _ in range(m):
     x,y,z=tuple(map(int,input().split()))
     graph[x].append((y,z))
     graph[y].append((x,z))
