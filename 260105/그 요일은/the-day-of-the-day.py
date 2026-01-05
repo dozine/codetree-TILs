@@ -8,6 +8,7 @@ for i in range(m1,m2):
     total_days+=days[i]
 total_days = total_days + d2 - d1
 
-weekday = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
-ans = total_days // 7 +1
+weekday = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+idx = weekday.index(A)
+ans = (total_days - idx) // 7+1
 print(ans)
