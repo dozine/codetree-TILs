@@ -1,12 +1,18 @@
+def modify_numbers(a, b):
+    if a < b:
+        a += 10
+        b *= 2
+    else:
+        b += 10
+        a *= 2
+    return a, b
+
+
+# 입력 예시
 a, b = map(int, input().split())
 
-# Please write your code here.
+# 함수 호출
+a, b = modify_numbers(a, b)
 
-def solution(a,b):
-    small = min(a,b) + 10
-    big = max(a,b) *2
-    print(small, big)
-    return 
-     
-
-solution(a,b)
+# 출력 (함수 호출 이후)
+print(a, b)
