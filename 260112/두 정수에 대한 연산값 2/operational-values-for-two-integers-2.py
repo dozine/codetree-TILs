@@ -6,4 +6,4 @@ def solution(a,b):
     print(min(a,b)+10, max(a,b)*2)
      
 
-def solution(a,b)
+solution(a,b)
