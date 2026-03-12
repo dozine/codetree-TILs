@@ -16,4 +16,4 @@ def solution(n, b):
 
 # 리스트 요소를 공백 없이 출력
 result = solution(N, B)
-print(*(result), sep='')
+print(*result, sep='')
