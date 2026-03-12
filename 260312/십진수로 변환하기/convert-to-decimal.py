@@ -1,5 +1,5 @@
 # 변수 선언 및 입력
-binary = list(map(int, list(input())))
+binary = list(map(int,input()))
 length = len(binary)
 
 # 십진수로 변환합니다.
