@@ -47,6 +47,3 @@ else:
     area = (max_x - min_x + 1) * (max_y - min_y + 1)
 
 print(area)
-
-
-
