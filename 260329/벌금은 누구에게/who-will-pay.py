@@ -6,7 +6,7 @@ arr = [
 
 punish = [0] * (n+1)
 
-ans = 0
+ans = -1
 for i in arr:
     punish[i] += 1 
     if punish[i] >= k:
