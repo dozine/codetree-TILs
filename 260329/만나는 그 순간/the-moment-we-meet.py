@@ -1,42 +1,30 @@
-import sys
+MAX_T = 1000000
 
-n, m = map(int, sys.stdin.readline().split())
+# 변수 선언 및 입력
+n, m = tuple(map(int, input().split()))
+pos_a, pos_b = [0] * (MAX_T + 1), [0] * (MAX_T + 1)
 
-pos_a = []
-pos_b = []
-
-curr_a = 0
+# A가 매 초마다 서있는 위치를 기록
+time_a = 1
 for _ in range(n):
-    dist, direction = sys.stdin.readline().split()
-    dist = int(dist)
-    for _ in range(dist):
-        if direction == 'R':
-            curr_a += 1
-        else:
-            curr_a -= 1
-        pos_a.append(curr_a)
+    d, t = tuple(input().split())
+    for _ in range(int(t)):
+        pos_a[time_a] = pos_a[time_a - 1] + (1 if d == 'R' else -1)
+        time_a += 1
 
-# B의 이동 경로 기록 (1초 단위)
-curr_b = 0
+# B가 매 초마다 서있는 위치를 기록
+time_b = 1
 for _ in range(m):
-    dist, direction = sys.stdin.readline().split()
-    dist = int(dist)
-    for _ in range(dist):
-        if direction == 'R':
-            curr_b += 1
-        else:
-            curr_b -= 1
-        pos_b.append(curr_b)
+    d, t = tuple(input().split())
+    for _ in range(int(t)):
+        pos_b[time_b] = pos_b[time_b - 1] + (1 if d == 'R' else -1)
+        time_b += 1
 
-# 2. 최초로 만나는 시간 찾기
-# 두 사람이 움직인 총 시간 중 더 짧은 시간만큼만 비교 가능 (동시에 움직이는 동안만)
-min_time = min(len(pos_a), len(pos_b))
-ans = -1 # 만약 만나지 못하면 -1 출력 (문제 조건에 따라 다름)
-
-for t in range(min_time):
-    # t는 인덱스이므로, 실제 시간은 t + 1초입니다.
-    if pos_a[t] == pos_b[t]:
-        ans = t + 1
+# 최초로 만나는 시간을 구합니다.
+ans = -1
+for i in range(1, time_a):
+    if pos_a[i] == pos_b[i]:
+        ans = i
         break
-
+        
 print(ans)
