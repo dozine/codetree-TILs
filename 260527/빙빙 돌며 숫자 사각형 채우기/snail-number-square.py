@@ -36,3 +36,8 @@ for i in range(n):
     for j in range(m):
         print(answer[i][j], end = ' ')
     print()
+
+
+
+
+## 어렵다!! 근데 노력하면 풀수도 있을 거 같다. 포기보다는 그냥 할 수 있다고 생각하자.
