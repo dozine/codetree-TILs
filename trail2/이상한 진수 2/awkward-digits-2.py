@@ -1,17 +1,21 @@
 import sys
-INT_MIN=-sys.maxsize
 
-a=list(map(int,list(input())))
-n=len(a)
+INT_MIN = -sys.maxsize
 
-ans=INT_MIN
+def decimal(arr):
+    num = 0
+    for x in arr:
+        num = num * 2 + x
+    return num
+
+a = list(map(int, input()))
+n = len(a)
+
+ans = INT_MIN
+
 for i in range(n):
-    a[i]=1-a[i]
-    num=0
-    for j in range(n):
-        num=num*2+a[j]
-    ans=max(ans,num)
-    a[i]=1-a[i]
+    a[i] = 1 - a[i]
+    ans = max(ans, decimal(a))
+    a[i] = 1 - a[i]
+
 print(ans)
-
-
