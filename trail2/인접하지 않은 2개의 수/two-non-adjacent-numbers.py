@@ -15,6 +15,7 @@ arr = list(map(int,input().split()))
 max_ans = -1
 for i in range(n):
     for j in range(i+2,n):
+        if abs(i-j) > 1: 
             sum = arr[i]+arr[j]
             max_ans = max(sum, max_ans) 
 
