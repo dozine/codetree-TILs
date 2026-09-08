@@ -16,5 +16,3 @@ for i in range(n):
     if overlap==False:
         ans+=1
 print(ans)
-
-
